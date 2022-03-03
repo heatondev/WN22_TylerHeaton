@@ -6,6 +6,8 @@ public class ControlAnimator : MonoBehaviour
 {
     public Animator animator;
 
+    [SerializeField]
+    string _animParameter;
     public void StartAnimatorPlayback()
     {
         StartCoroutine(PlayBack());
@@ -19,13 +21,18 @@ public class ControlAnimator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //  animator.SetBool("Bool", true);
+            StartAnimatorPlayback();
+        }
     }
 
     IEnumerator PlayBack()
     {
-        animator.SetBool("StartPlayback", true);
+        animator.SetBool(_animParameter, true);
         yield return new WaitForSeconds(2);
-        animator.SetBool("StartPlayback", false);
+        animator.SetBool(_animParameter, false);
+        
     }
 }

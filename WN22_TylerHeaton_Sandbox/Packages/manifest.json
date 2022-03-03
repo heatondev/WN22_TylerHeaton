@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.microsoft.altspacevr_uploader": "file:C:/Users/Heaton Media/Downloads/com.microsoft.altspacevr_uploader-2.2.29.tgz",
     "com.unity.animation.rigging": "1.0.3",
     "com.unity.collab-proxy": "1.9.0",
     "com.unity.ext.nunit": "1.0.0",
