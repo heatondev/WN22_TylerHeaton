@@ -15,7 +15,7 @@ public class ControlAnimator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        animator.SetBool("Toggle", true);
     }
 
     // Update is called once per frame
@@ -23,7 +23,7 @@ public class ControlAnimator : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //  animator.SetBool("Bool", true);
+            
             StartAnimatorPlayback();
         }
     }
