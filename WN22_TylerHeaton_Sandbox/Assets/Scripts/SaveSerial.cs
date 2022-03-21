@@ -9,67 +9,16 @@ using TMPro;
 
 public class SaveSerial : MonoBehaviour
 {
-    int intToSave;
-    float floatToSave;
-    string stringToSave;
-    bool boolToSave;
-    
-
-    //public GameObject displayObject;
-
-    //Text for displaying information
-    public TextMeshProUGUI floatText;
-    public TextMeshProUGUI intText;
-    public TextMeshProUGUI dataText;
-    public TextMeshProUGUI preamble;
-
-    public Slider floatSlider, intSlider;
-    public Toggle inputBool;
-    
-    
-
-    public TMP_InputField nameString;
-
-    //complex variables
-    bool onShowObject = false;
-    Color saveObjectColor = Color.blue;
+    ChangeUI di;
 
 
-    public void ChangeSliderValue()
+    private void Awake()
     {
-        floatToSave = floatSlider.value;
-        intToSave = Mathf.RoundToInt(intSlider.value);
-        intText.text = intToSave.ToString();
-        floatText.text = floatToSave.ToString();
-
+        di = GetComponent<ChangeUI>();
     }
-
-    public void UpdateInfo()
-    {
-        boolToSave = inputBool;
-        intToSave = Mathf.RoundToInt(intSlider.value);
-        floatToSave = floatSlider.value;
-        stringToSave = nameString.text;
-        dataText.text = stringToSave;
-    }
-
-    void DisplayInfo()
-    {
-        intText.text = intToSave.ToString();
-        floatText.text = floatToSave.ToString();
-        intSlider.value = (float)intToSave;
-        floatSlider.value = floatToSave;
-        Debug.Log("Both sliders updated");
-    }
-
-    private void Update()
-    {
-        
-    }
-
     public void SaveGame()
     {
-        UpdateInfo();
+        di.UpdateInfo();
       
         //Constructs a new binary format object
         BinaryFormatter bf = new BinaryFormatter();
@@ -78,15 +27,15 @@ public class SaveSerial : MonoBehaviour
         //Constructs a new SaveData object to access the serializable variables
         SaveData data = new SaveData();
         //Saves local variable values to SaveData vaiables
-        data.savedInt = intToSave;
-        data.savedFloat = floatToSave;
-        data.savedString = stringToSave;
-        data.savedBool = boolToSave;
+        data.savedInt = di.intToSave;
+        data.savedFloat = di.floatToSave;
+        data.savedString = di.stringToSave;
+        data.savedBool = di.boolToSave;
         
         bf.Serialize(file, data);
         //Closes file stream
         file.Close();
-        dataText.text = "Hi "+stringToSave +". Your number is " + intToSave.ToString();
+        di.dataText.text = "Hi "+di.stringToSave +". Your number is " + di.intToSave.ToString();
         Debug.Log("Your game is saved");
 
     }
@@ -101,15 +50,15 @@ public class SaveSerial : MonoBehaviour
             SaveData data = bf.Deserialize(file) as SaveData;
             file.Close();
 
-            intToSave = data.savedInt;
-            floatToSave = data.savedFloat;
-            boolToSave = data.savedBool;
-            stringToSave = data.savedString;
+            di.intToSave = data.savedInt;
+            di.floatToSave = data.savedFloat;
+           di.boolToSave = data.savedBool;
+            di.stringToSave = data.savedString;
 
            
             Debug.Log("Your data has been retrieved");
-            dataText.text = "Hello " + stringToSave + ". Your integer was " + intToSave.ToString() + " and your float was " + floatToSave.ToString();
-            DisplayInfo();
+            di.dataText.text = "Hello " + di.stringToSave + ". Your integer was " + di.intToSave.ToString() + " and your float was " + di.floatToSave.ToString();
+            di.DisplayInfo();
         }
         else Debug.LogError("There is no saved data!");
     }
@@ -121,11 +70,12 @@ public class SaveSerial : MonoBehaviour
         {
             File.Delete(Application.persistentDataPath
                               + "/myData.vxr");
-            intToSave = 0;
-            floatToSave = 0.0f;
-            boolToSave = false;
-            stringToSave = "";
+           di.intToSave = 0;
+            di.floatToSave = 0.0f;
+           di.boolToSave = false;
+            di.stringToSave = "";
             Debug.Log("Data reset complete!");
+            //di.UpdateInfo();
         }
         else
             Debug.LogError("No save data to delete.");

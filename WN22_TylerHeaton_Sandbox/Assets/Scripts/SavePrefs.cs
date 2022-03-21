@@ -6,26 +6,16 @@ using TMPro;
 
 public class SavePrefs : MonoBehaviour
 {
-    //Text for displaying information
-    public TextMeshProUGUI floatText;
-    public TextMeshProUGUI intText;
-    public TextMeshProUGUI dataText;
-    public TextMeshProUGUI preamble;
+    ChangeUI ui;
 
-    //variables to be saved
-    int intToSave;
-    float floatToSave;
-    string stringToSave;
+   
 
-    //inputs for changing variables
-    public Slider floatSlider;
-    public Slider intSlider;
-    public TMP_InputField nameString;
+    private void Awake()
+    {
+        ui = GetComponent<ChangeUI>();
+       
+    }
 
-    //complex variables
-    bool onShowObject = false;
-    Color saveObjectColor = Color.blue;
-    
 
     private void Start()
     {
@@ -33,25 +23,20 @@ public class SavePrefs : MonoBehaviour
     }
 
 
-    public void ChangeSliderValue()
-    {
-        floatToSave = floatSlider.value;
-        intToSave = Mathf.RoundToInt(intSlider.value);
-        intText.text = intToSave.ToString();
-        floatText.text = floatToSave.ToString();
-    }
+   
   // saves playerpref keys and values
     public void SaveGame()
     {
-        intToSave = Mathf.RoundToInt(intSlider.value);
-        floatToSave = floatSlider.value;
-        stringToSave = nameString.text;
-        PlayerPrefs.SetInt("SavedInteger", intToSave);
+        ui.UpdateInfo();
+        //intToSave = Mathf.RoundToInt(ui.intSlider.value);
+        //floatToSave = ui.floatSlider.value;
+        //stringToSave = ui.nameString.text;
+        PlayerPrefs.SetInt("SavedInteger", ui.intToSave);
         PlayerPrefs.SetInt("SavedInteger2", 5);
-        PlayerPrefs.SetFloat("SavedFloat", floatToSave);
-        PlayerPrefs.SetString("SavedString", stringToSave);
+        PlayerPrefs.SetFloat("SavedFloat", ui.floatToSave);
+        PlayerPrefs.SetString("SavedString", ui.stringToSave);
         PlayerPrefs.Save();
-        dataText.text = "Your number is " + intToSave.ToString();
+        ui.dataText.text = "Your number is " + ui.intToSave.ToString()+ ". You are a " + ui.characterText;
         Debug.Log("Game data saved!");
     }
     //loads values from playerprefs
@@ -60,11 +45,11 @@ public class SavePrefs : MonoBehaviour
         //check to see if key/value has been saved
         if (PlayerPrefs.HasKey("SavedInteger"))
         {
-            intToSave = PlayerPrefs.GetInt("SavedInteger");       
-            floatToSave = PlayerPrefs.GetFloat("SavedFloat");
-            stringToSave = PlayerPrefs.GetString("SavedString");
+            ui.intToSave = PlayerPrefs.GetInt("SavedInteger");
+            ui.floatToSave = PlayerPrefs.GetFloat("SavedFloat");
+            ui.stringToSave = PlayerPrefs.GetString("SavedString");
           
-            dataText.text = "Hello " + stringToSave + ". Your integer was " + intToSave.ToString() + " and your float was " + floatToSave.ToString();
+            ui.dataText.text = "Hello " + ui.stringToSave + ". Your integer was " + ui.intToSave.ToString() + " and your float was " + ui.floatToSave.ToString() + ". You are a "+ui.characterText;
             Debug.Log("Game data loaded!");
         }
         else
@@ -76,32 +61,27 @@ public class SavePrefs : MonoBehaviour
     public void ResetData()
     {
         PlayerPrefs.DeleteAll();
-        intToSave = 0;
-        floatToSave = 0.0f;
+        ui.intToSave = 0;
+        ui.floatToSave = 0.0f;
         // stringToSave = "";
-        dataText.text = "Your number is " + intToSave.ToString();
+        ui.dataText.text = "Your number is " + ui.intToSave.ToString();
        StartCoroutine( UpdateUI());
        
         Debug.Log("Data reset complete");
     }
 
-    public void QuitGame()
-    {
-        SaveGame();
-        UnityEditor.EditorApplication.isPlaying = false;
-       // Application.Quit();
-    }
+   
     IEnumerator UpdateUI()
     {
          
-        intText.text = intToSave.ToString();
+        ui.intText.text = ui.intToSave.ToString();
         yield return new WaitForSeconds(0.1f);
-        floatText.text = floatToSave.ToString();
+        ui.floatText.text = ui.floatToSave.ToString();
             yield return new WaitForSeconds(0.1f);
-        intSlider.value = intToSave;
+        ui.intSlider.value = ui.intToSave;
             yield return new WaitForSeconds(0.1f);
-        floatSlider.value = floatToSave;
-        Debug.Log(floatToSave);
+        ui.floatSlider.value = ui.floatToSave;
+        Debug.Log(ui.floatToSave);
         //preamble.text = "Enter Name";
 
     }
