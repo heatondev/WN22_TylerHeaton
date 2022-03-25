@@ -6,11 +6,29 @@ public class ToggleAnimation : MonoBehaviour
 {
 
     public Animator animator;
+    SavePrefs savedStuff;
+
+    void Awake()
+    {
+       
+    }
+
+   public  int isStarted;
+  public  int isSwitched;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (isStarted == 1)
+        {
+            animator.SetBool("Started", true);
+        } else animator.SetBool("Started", false);
+
+        if (isSwitched == 1)
+        {
+            animator.SetBool("Switched", true);
+        }
+        else animator.SetBool("Switched", false);
     }
 
     // Update is called once per frame

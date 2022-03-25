@@ -7,13 +7,13 @@ using TMPro;
 public class SavePrefs : MonoBehaviour
 {
     ChangeUI ui;
-
+    ToggleAnimation toggle;
    
 
     private void Awake()
     {
         ui = GetComponent<ChangeUI>();
-       
+        toggle = GetComponent<ToggleAnimation>();
     }
 
 
@@ -32,9 +32,10 @@ public class SavePrefs : MonoBehaviour
         //floatToSave = ui.floatSlider.value;
         //stringToSave = ui.nameString.text;
         PlayerPrefs.SetInt("SavedInteger", ui.intToSave);
-        PlayerPrefs.SetInt("SavedInteger2", 5);
+      
         PlayerPrefs.SetFloat("SavedFloat", ui.floatToSave);
         PlayerPrefs.SetString("SavedString", ui.stringToSave);
+        PlayerPrefs.SetInt("StartBool", toggle.isStarted);
         PlayerPrefs.Save();
         ui.dataText.text = "Your number is " + ui.intToSave.ToString()+ ". You are a " + ui.characterText;
         Debug.Log("Game data saved!");
@@ -48,6 +49,8 @@ public class SavePrefs : MonoBehaviour
             ui.intToSave = PlayerPrefs.GetInt("SavedInteger");
             ui.floatToSave = PlayerPrefs.GetFloat("SavedFloat");
             ui.stringToSave = PlayerPrefs.GetString("SavedString");
+            toggle.isStarted = PlayerPrefs.GetInt("StartBool");
+            toggle.isSwitched = PlayerPrefs.GetInt("isSwitched");
           
             ui.dataText.text = "Hello " + ui.stringToSave + ". Your integer was " + ui.intToSave.ToString() + " and your float was " + ui.floatToSave.ToString() + ". You are a "+ui.characterText;
             Debug.Log("Game data loaded!");
